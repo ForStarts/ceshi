@@ -46,4 +46,3 @@ st.write(666)
 st.write([1,2,3])  # 竖向显示，而且采用“下标：数字”的形式
 # 数据框（DataFrame）（表格）
 st.write("这是一个数据框：")
-st.write(pd.DataFrame({'first column': [1, 2, 3, 4],'second column': [10, 20, 30, 40],}))
