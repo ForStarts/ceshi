@@ -112,9 +112,8 @@ def play_midi(file_name):
     pygame.init()
     pygame.mixer.init()
     midi_file = file_name
-    pygame.mixer.music.load(midi_file)
-    pygame.mixer.music.play(1)  # 播放整个MIDI文件，传入参数设置循环播放次数以使其异步（后台）播放，-1表示循环播放
-st.write('正在播放中，而且持续播放。')
+    sound=pygame.mixer.Sound(midi_file)
+    sound.play(1)  # 播放整个MIDI文件，传入参数设置循环播放次数以使其异步（后台）播放，-1表示循环播放
 
 #按钮交互
 st.button('按下')
@@ -123,7 +122,6 @@ if st.button('点击'): #检测到点击，就运行其中代码
 #点击播放音乐
 if 'song_state' not in st.session_state:    #让按钮点击事件与数据绑定，使得可以通过按钮修改变量的值
     st.session_state['song_state']=0
-stop_positon=0
 if(st.button('播放音乐')):
     if st.session_state.song_state==0:   #此时没有播放音乐
         play_midi('Blue Danube - Johann Strauss Jr..mid')
