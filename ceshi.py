@@ -125,7 +125,7 @@ if 'song_state' not in st.session_state:    #让按钮点击事件与数据绑�
 stop_positon=0
 if(st.button('播放音乐')):
     if st.session_state.song_state==0:   #此时没有播放音乐
-        play_midi('./Blue Danube - Johann Strauss Jr..mid')
+        play_midi('Blue Danube - Johann Strauss Jr..mid')
         st.session_state.song_state=1    #播放音乐状态
         st.write('chongkai')
     elif st.session_state.song_state==-1:   #此时暂停状态
@@ -136,7 +136,7 @@ def change_to_stop():
     st.session_state.song_state=-1
 if(st.button('暂停音乐',on_click=change_to_stop())):
     pygame.mixer.music.pause()
-    st.session_state.song_statee=-1
+    st.session_state.song_state=-1
 # pygame.mixer.music.set_endevent(0)
 # if pygame.mixer.music.get_endevent()==0:
 #     st.session_state.song_state=0    #处于暂停状态
