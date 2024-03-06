@@ -110,6 +110,7 @@ st.image('./keqing.png',    #想显示网络图片不知道为什么显示不了
 import pygame
 def play_midi(file_name):
     pygame.init()
+    pygame.mixer.init()
     midi_file = file_name
     pygame.mixer.music.load(midi_file)
     pygame.mixer.music.play(1)  # 播放整个MIDI文件，传入参数设置循环播放次数以使其异步（后台）播放，-1表示循环播放
