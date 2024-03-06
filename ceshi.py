@@ -109,7 +109,6 @@ st.image('./keqing.png',    #想显示网络图片不知道为什么显示不了
 #显示音频/音乐（因为它不支持mid格式，所以采用调用播放程序的方式来实现）
 import pygame
 pygame.init()
-pygame.mixer.init()
 def play_midi(file_name):
     midi_file = file_name
     sound=pygame.mixer.Sound(midi_file)
