@@ -119,6 +119,12 @@ st.button('按下')
 if st.button('点击'): #检测到点击，就运行其中代码
     st.write('你点击了按钮')
 #点击播放音乐
+#设置输出的音频设备
+import pygame._sdl2
+audio_devices=pygame._sdl2.get_audio_device_names()
+st.write('音频设备列表：',audio_devices)
+if audio_devices:
+    pygame.mixer.pre_init(devicename=audio_devices[0])
 if 'song_state' not in st.session_state:    #让按钮点击事件与数据绑定，使得可以通过按钮修改变量的值
     st.session_state['song_state']=0
 if(st.button('播放音乐')):
