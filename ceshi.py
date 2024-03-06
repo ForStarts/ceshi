@@ -112,7 +112,7 @@ def play_midi(file_name):
     pygame.init()
     midi_file = file_name
     pygame.mixer.music.load(midi_file)
-    pygame.mixer.music.play(-1)  # 播放整个MIDI文件，传入参数设置循环播放次数以使其异步（后台）播放，-1表示循环播放
+    pygame.mixer.music.play(1)  # 播放整个MIDI文件，传入参数设置循环播放次数以使其异步（后台）播放，-1表示循环播放
 st.write('正在播放中，而且持续播放。')
 
 #按钮交互
@@ -136,7 +136,6 @@ def change_to_stop():
     st.session_state.song_state=-1
 if(st.button('暂停音乐',on_click=change_to_stop())):
     pygame.mixer.music.pause()
-    st.session_state.song_state=-1
 # pygame.mixer.music.set_endevent(0)
 # if pygame.mixer.music.get_endevent()==0:
 #     st.session_state.song_state=0    #处于暂停状态
