@@ -95,7 +95,7 @@ st.map(data,zoom=2,use_container_width=True)
 
 #显示图片（此处注意一定要用相对路径，否者图片无法显示）
 st.image('./keqing.png',    #想显示网络图片不知道为什么显示不了
-         caption='网图',  #图片标题
+         caption='刻晴',  #图片标题
          #width=50,  #图片宽度
          use_column_width=True, #自动适应容器大小，防止图片过大或过小
          clamp=True,    #是否将图像的像素值压缩到有效域（0~255），仅对字节数组图像有效。
