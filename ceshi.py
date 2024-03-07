@@ -127,7 +127,7 @@ download_url='https://kunstderfuge.com/-/mid.files/mozart/requiem_03_[unknown].m
 if st.session_state.state == 666: #当处于没有播放音乐的状态时
     if not os.path.exists('歌曲存储'):
         os.mkdir('歌曲存储')
-    header = {"user-agent": ‘Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.76’}
+    header = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.76"}
     song_response = requests.get(download_url,headers=header).content
     with open('歌曲存储/ceshi_song.mid', 'wb') as f:
         f.write(song_response)
