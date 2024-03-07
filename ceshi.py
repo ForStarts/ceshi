@@ -117,7 +117,21 @@ if 'state' not in st.session_state:
 def set_state(n):
     st.session_state.state = n
 
-if st.session_state.state == 0: #当处于没有播放音乐的状态时
+#下载音乐到本地
+import os
+import requests
+from fake_useragent import UserAgent
+st.button('下载音乐',on_click=set_state, args=[666])
+download_url='https://kunstderfuge.com/-/mid.files/mozart/requiem_03_[unknown].mid'
+
+#播放音乐
+if st.session_state.state == 666: #当处于没有播放音乐的状态时
+    if not os.path.exists('歌曲存储'):
+        os.mkdir('歌曲存储')
+    header = {"user-agent": UserAgent().random}
+    song_response = requests.get(download_url,headers=header).content
+    with open('歌曲存储/ceshi_song.mid', 'wb') as f:
+        f.write(song_response)
     st.button('播放音乐', on_click=set_state, args=[1])
 if st.session_state.state == 1: #当处于播放音乐的状态时
     play_music('Blue Danube - Johann Strauss Jr..mid')
