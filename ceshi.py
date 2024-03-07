@@ -105,38 +105,32 @@ st.image('./keqing.png',    #想显示网络图片不知道为什么显示不了
 
 #显示视频
 #st.video()
-
 #显示音频/音乐（因为它不支持mid格式，所以采用调用播放程序的方式来实现）
 import pygame
 pygame.init()
-def play_midi(file_name):
-    midi_file = file_name
-    sound=pygame.mixer.Sound(midi_file)
-    sound.play(1)  # 播放整个MIDI文件，传入参数设置循环播放次数以使其异步（后台）播放，-1表示循环播放
+pygame.mixer.init()
+def play_music(file_path):
+    pygame.mixer.music.load(file_path)
+    pygame.mixer.music.play()
+if 'state' not in st.session_state:
+    st.session_state.state = 0
+def set_state(n):
+    st.session_state.state = n
 
-#按钮交互
-st.button('按下')
-if st.button('点击'): #检测到点击，就运行其中代码
-    st.write('你点击了按钮')
-#点击播放音乐
-if 'song_state' not in st.session_state:    #让按钮点击事件与数据绑定，使得可以通过按钮修改变量的值
-    st.session_state['song_state']=0
-if(st.button('播放音乐')):
-    if st.session_state.song_state==0:   #此时没有播放音乐
-        play_midi('Blue Danube - Johann Strauss Jr..mid')
-        st.session_state.song_state=1    #播放音乐状态
-        st.write('chongkai')
-    elif st.session_state.song_state==-1:   #此时暂停状态
-        pygame.mixer.music.unpause()
-        st.session_state.song_state=1
-        st.write('jixu')
-def change_to_stop():
-    st.session_state.song_state=-1
-if(st.button('暂停音乐',on_click=change_to_stop())):
+if st.session_state.state == 0: #当处于没有播放音乐的状态时
+    st.button('播放音乐', on_click=set_state, args=[1])
+if st.session_state.state == 1: #当处于播放音乐的状态时
+    play_music('Blue Danube - Johann Strauss Jr..mid')
+    st.button('暂停音乐', on_click=set_state, args=[2])
+    st.button('重新开始音乐',on_click=set_state, args=[1])
+if st.session_state.state == 2: #当处于暂停状态时
     pygame.mixer.music.pause()
-# pygame.mixer.music.set_endevent(0)
-# if pygame.mixer.music.get_endevent()==0:
-#     st.session_state.song_state=0    #处于暂停状态
+    st.button('继续播放', on_click=set_state, args=[3])
+    st.button('重新开始音乐',on_click=set_state, args=[1])
+if st.session_state.state == 3: #当处于继续播放状态时
+    pygame.mixer.music.unpause()
+    st.button('暂停音乐', on_click=set_state, args=[2])
+    st.button('重新开始音乐',on_click=set_state, args=[1])
 
 
 
