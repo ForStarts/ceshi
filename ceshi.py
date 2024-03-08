@@ -1,5 +1,5 @@
 import streamlit as st
-
+import streamlit.components.v1 as components
 #添加标题
 st.title("这是一个标题：hello world!")
 st.header("这是一个较小的标题。")
@@ -145,7 +145,22 @@ if st.session_state.state == 3: #当处于继续播放状态时
     st.button('暂停音乐', on_click=set_state, args=[2])
     st.button('重新开始音乐',on_click=set_state, args=[1])
 
-
+components.html("""
+<script type="text/javascript" src="./js/midi/audioDetect.js"></script>
+<script src="./js/midi/gm.js"></script>
+<script src="./js/midi/loader.js"></script>
+<script src="./js/midi/plugin.audiotag.js"></script>
+<script src="./js/midi/plugin.webaudio.js"></script>
+<script src="./js/midi/plugin.webmidi.js"></script>
+<script src="./js/midi/player.js"></script>
+<script src="./js/midi/synesthesia.js"></script>
+<a href='javascript: 
+MIDI.loadPlugin({
+        callback: function() {
+            MIDI.Player.loadFile("start.mid", MIDI.Player.start);
+        }
+    });'>播放test1</a>
+<a href='javascript: MIDIjs.stop()'>停止test1</a>""")
 
 #自动刷新网页代码
 # from streamlit_autorefresh import st_autorefresh
