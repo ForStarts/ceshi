@@ -1,150 +1,51 @@
+# coding=utf-8
 import streamlit as st
-import streamlit.components.v1 as components
-#添加标题
-st.title("这是一个标题：hello world!")
-st.header("这是一个较小的标题。")
-st.subheader("这是一个相对较小的标题。。。")
-
-#添加文本（而且是完全反应书写的代码结构来显示），使用markdown语法书写更灵活，功能多
-st.markdown('''
-# 静夜思
-床前**明月**光，疑是地上霜。
-''')
-st.text('''静夜思
-床前明月光，疑是地上霜。
-    举头望明月，低头思故乡。''')
-
-#显示代码(有语法高亮，颜色区分，字体区分等等）
-st.markdown('''**以下为打印的代码**''')
-st.code('''
-def bubble_sort(arr):
-    n = len(arr)
-    # 遍历所有数组元素
-    for i in range(n):
-        # 最后 i 个元素已经排好序，不需要再比较
-        for j in range(0, n-i-1):
-            # 如果元素比下一个元素大，则交换它们
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-# 示例使用
-if __name__ == "__main__":
-    # 测试数据
-    example_list = [64, 34, 25, 12, 22, 11, 90]
-    print("原始数组:", example_list)
-    # 调用冒泡排序函数
-    bubble_sort(example_list)
-    print("排序后的数组:", example_list)                   
-''',language='python')
-
-#通用显示方法（展示文本和数据，包含markdown字符串、数字、DataFrame、图表）
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
-# 字符串,数字，列表
-st.write("这是一段字符。666")
-st.write(666)
-st.write([1,2,3])  # 竖向显示，而且采用“下标：数字”的形式
-# 数据框（DataFrame）（表格）st.write(),调用的是st.dataframe(),可编辑，具有pandas诸多功能；st.table()不可编辑，仅显示.
-st.write("这是一个数据框：")
-df=pd.DataFrame({'first column': [1, 2, 3, 4],'second column': [10, 20, 30, 40],})
-st.dataframe(df)
-st.dataframe(df.style.highlight_max(color='lightgreen', axis=0))#将每一列的最大值高亮显示
-st.table(pd.DataFrame({'first column': [1, 2, 3, 4],'second column': [10, 20, 30, 40],}))
-st.write(pd.DataFrame({'first column': [1, 2, 3, 4],'second column': [10, 20, 30, 40],}))
-#多参数显示
-st.write("这是一个多参数显示：")
-st.write('这是一个字符串',[1,2,3],666,{'key':'value'})
-#自定义渲染(此处绘图使用通用的st.write()或者专用的st.pyplot()都可以）
-#绘图1
-fig,ax=plt.subplots()   #创建图表和坐标轴对象
-x=np.linspace(0,10,100)#生成0-10的100个点
-y=np.sin(x)
-ax.plot(x,y)
-st.write(fig)
-#绘图2(如果有matplotlib显示问题，可以参考是不是使用功能的后端backend问题)
-x1=np.linspace(0,10,100)
-y1=np.sin(x1)
-y2=np.cos(x1)
-plt.plot(x1,y1,label='sin')
-plt.plot(x1,y2,label='cos')
-plt.legend()#显示图例
-st.pyplot(plt)
-plt.close()
 
-#显示JSON
-st.json({
-    'a':1,
-    'b':'hello',
-    'data':'aiongaioguajoignoaijhinczlkhoiewup',
-    'list':[
-        '1',
-        '2',
-        '3'
-    ]
-})
+"""多页面测试：每个页面存储一定的信息，通过存储在st.session_state的变量中来保证信息的共享性、复用性和可修改性。
+    页面1：一个创建的pandas表格，可以通过某些按钮增加或减少其行。页面名字定为：first
+    页面2：一行输入框，输入内容可保存至下一次打开（选做），可以通过按钮控件添加新一行输入框。页面名字定为：second
+    页面3：待定"""
+#创建页面切换逻辑：由一个共享变量存储当前应该显示的页面值，比如页面1为1，页面2为2。
+if 'page' not in st.session_state:
+    st.session_state['page'] = 1    #默认显示页面1
+# 创建页面切换按钮
+page_cols=st.columns(2) #创建两列的页面切换栏
+if page_cols[0].button('页面1'):
+    st.session_state['page'] = 1
+if page_cols[1].button('页面2'):
+    st.session_state['page'] = 2
 
-#显示地图(参数data,zoom,use_container_width(取True占用整个容器宽度))
-#st.map()    #通过这句代码可以直接显示全球平面地图，支持缩放，小到具体建筑，大到全球。
-data={
-    #只有前两个是必要的。
-    'latitude':[37.7749,34.0522,40.7128],
-    'longitude':[-122.4194,-188.2437,-74.0060],
-    'name':['a','Los Angeles', 'New York']  #用红点标注特定地方
-}
-st.map(data,zoom=2,use_container_width=True)
+#创建初始表格
+@st.cache_data
+def first_create_data():
+    df = pd.DataFrame(columns=['num1','num2','num3'])   #创建三列的空表格
+    return df
+#初始化页面中的表格相关数据
+if 'first_RowNum' not in st.session_state:
+    st.session_state['first_RowNum'] = 0    #只计算真正数据的行数，不计算表头
+if 'first_dataframe' not in st.session_state:
+    st.session_state['first_dataframe'] = first_create_data()   #初始化表格数据
 
-#显示图片（此处注意一定要用相对路径，否者图片无法显示）
-st.image('./keqing.png',    #想显示网络图片不知道为什么显示不了
-         caption='刻晴',  #图片标题
-         #width=50,  #图片宽度
-         use_column_width=True, #自动适应容器大小，防止图片过大或过小
-         clamp=True,    #是否将图像的像素值压缩到有效域（0~255），仅对字节数组图像有效。
-         channels='RGB',    #图像通道类型，有‘RGB’和‘BGR’
-         #format    #图片格式。实际使用中报错，不知道为什么
-)
 
-#显示视频
-#st.video()
-#显示音频/音乐（因为它不支持mid格式，所以采用调用播放程序的方式来实现）
-import pygame
-pygame.init()
-# pygame.mixer.init()
-def play_music(file_path):
-    pygame.mixer.music.load(file_path)
-    pygame.mixer.music.play()
-if 'state' not in st.session_state:
-    st.session_state.state = 0
-def set_state(n):
-    st.session_state.state = n
+#前端显示逻辑
+if st.session_state['page'] == 1:
+    st.title('页面1')
+    #创建增添行的按钮
+    button_cols=st.columns(2)
+    if button_cols[0].button('增加一行'):
+        st.session_state['first_RowNum'] += 1
+        data=st.session_state['first_RowNum']
+        st.session_state['first_dataframe'].loc[data] = [data,data*data,data*data*data]   #增加一行，并初始化三列数据
+    if button_cols[1].button('减少一行'):
+        data=st.session_state['first_RowNum']
+        try:
+             st.session_state['first_dataframe'] = st.session_state['first_dataframe'].drop(index=data,axis=0)   #删除指定行号的行(drop方法不修改本身，仅返回修改后结果）
+             st.session_state['first_RowNum'] -= 1
+        except KeyError:
+            st.error('表格已为空，无法再删除行。')
+    #显示表格
+    st.dataframe(st.session_state['first_dataframe'])
+elif st.session_state['page'] == 2:
+    st.title('页面2')
 
-#下载音乐到本地
-import os
-import requests
-st.button('下载音乐',on_click=set_state, args=[666])
-download_url='https://kunstderfuge.com/-/mid.files/mozart/requiem_03_[unknown].mid'
-
-#播放音乐
-if st.session_state.state == 666: #当处于没有播放音乐的状态时
-    if not os.path.exists('歌曲存储'):
-        os.mkdir('歌曲存储')
-    header = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.76"}
-    song_response = requests.get(download_url,headers=header).content
-    with open('歌曲存储/ceshi_song.mid', 'wb') as f:
-        f.write(song_response)
-    st.button('播放音乐', on_click=set_state, args=[1])
-if st.session_state.state == 1: #当处于播放音乐的状态时
-    play_music('Blue Danube - Johann Strauss Jr..mid')
-    st.button('暂停音乐', on_click=set_state, args=[2])
-    st.button('重新开始音乐',on_click=set_state, args=[1])
-if st.session_state.state == 2: #当处于暂停状态时
-    pygame.mixer.music.pause()
-    st.button('继续播放', on_click=set_state, args=[3])
-    st.button('重新开始音乐',on_click=set_state, args=[1])
-if st.session_state.state == 3: #当处于继续播放状态时
-    pygame.mixer.music.unpause()
-    st.button('暂停音乐', on_click=set_state, args=[2])
-    st.button('重新开始音乐',on_click=set_state, args=[1])
-
-#自动刷新网页代码
-# from streamlit_autorefresh import st_autorefresh
-# st_autorefresh(1000)
