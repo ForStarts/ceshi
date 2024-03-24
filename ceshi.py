@@ -64,19 +64,20 @@ if st.button('下载'):
     st.write('下载成功！')
 
 from midi2audio import FluidSynth
-if st.button('播放'):
+if st.button('转换'):
     st.write('加载音色库……')
     FluidSynth(sound_font=r'./TimGM6mb.sf2').midi_to_audio('Blue Danube - Johann Strauss Jr..mid', 'Blue_ceshi2.wav')   #之后上线改名
     st.write('转换成功！')
-wav_file = 'Blue_ceshi2.wav'
-if os.path.isfile(wav_file):
-    # 使用HTML的<audio>标签来播放音频
-    audio_html = f"""  
-    <audio controls>  
-        <source src="{wav_file}" type="audio/wav">  
-    </audio>  
-    """
-    st.markdown(audio_html, unsafe_allow_html=True)
-else:
-    st.error('音频文件不存在，请检查文件路径。')
+if st.button('播放'):
+   wav_file = 'Blue_ceshi2.wav'
+   if os.path.isfile(wav_file):
+       # 使用HTML的<audio>标签来播放音频
+       audio_html = f"""  
+       <audio controls>  
+           <source src="{wav_file}" type="audio/wav">  
+       </audio>  
+       """
+       st.markdown(audio_html, unsafe_allow_html=True)
+   else:
+       st.error('音频文件不存在，请检查文件路径。')
 
