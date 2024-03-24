@@ -51,6 +51,7 @@ st.markdown('''
    播放音乐尝试：
 ''')
 import os
+import requests
 #下载midi文件
 if st.button('下载'):
     download_url = 'https://kunstderfuge.com/-/mid.files/albeniz/iberia_bk1_1_evocacion_%28c%29yogore.mid'  #之后可以改成点击触发，获取链接
