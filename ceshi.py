@@ -47,3 +47,36 @@ with page_cols[1]:
     st.subheader('页面2')
 
 
+st.markdown('''
+   播放音乐尝试：
+''')
+import os
+#下载midi文件
+if st.button('下载'):
+    download_url = 'https://kunstderfuge.com/-/mid.files/albeniz/iberia_bk1_1_evocacion_%28c%29yogore.mid'  #之后可以改成点击触发，获取链接
+    if not os.path.exists('歌曲存储'):
+        os.mkdir('歌曲存储')
+    header = {
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.76"}
+    song_response = requests.get(download_url, headers=header).content
+    with open('歌曲存储/ceshi_song.mid', 'wb') as f:
+        f.write(song_response)
+    st.write('下载成功！')
+
+from midi2audio import FluidSynth
+if st.button('播放'):
+    st.write('加载音色库……')
+    FluidSynth(sound_font=r'./TimGM6mb.sf2').midi_to_audio('Blue Danube - Johann Strauss Jr..mid', 'Blue_ceshi2.wav')   #之后上线改名
+    st.write('转换成功！')
+wav_file = 'Blue_ceshi2.wav'
+if os.path.isfile(wav_file):
+    # 使用HTML的<audio>标签来播放音频
+    audio_html = f"""  
+    <audio controls>  
+        <source src="{wav_file}" type="audio/wav">  
+    </audio>  
+    """
+    st.markdown(audio_html, unsafe_allow_html=True)
+else:
+    st.error('音频文件不存在，请检查文件路径。')
+
